@@ -1,0 +1,7 @@
+ = input string
+ ,
+ s modified: 
+
+
+
+0 =sum

@@ -1,0 +1,148 @@
+#include <bits/stdc++.h>
+/*
+ * Note: Incomplete program (just try to finish it!)
+ * */
+using namespace std;
+
+string ltrim(const string &);
+string rtrim(const string &);
+
+
+#define P pair<int,int>
+/*
+ * Complete the 'textFormatting' function below.
+ *
+ * The function is expected to return an INTEGER.
+ * The function accepts following parameters:
+ *  1. INTEGER_ARRAY starting
+ *  2. INTEGER_ARRAY ending
+ *  3. CHARACTER_ARRAY style
+ */
+// bool f(
+int textFormatting(vector<int> starting, vector<int> ending, vector<char> style) {
+    vector<P> b,i,u;
+    int i=0,n = starting.size(),res=0;
+    int bt=0,it=0,ut=0;
+            int l=0;r=0;
+    for(int p=0;p<n;p++) {
+        i = p;
+        bt=0,it=0,ut=0;
+        l = starting[i];
+        r = ending[i];
+        
+        if(style[i]=='b' ) {
+            if(b.back().second > l)
+                if(b.back().second <r)
+                {    b.back().second = r;
+                    
+                }
+                
+            }
+            else if(style[i]=='u') {
+                ut = 1;
+            }   
+            else if(style[i]=='i') {
+                it =1;
+            }
+        while((i+1)<n && starting[i]==starting[i+1] && ending[i+1] && ending[i]) {
+            if(style[i]=='b') {
+                bt=1;
+            }
+            else if(style[i]=='u') {
+                ut = 1;
+            }   
+            else if(style[i]=='i') {
+                it =1;
+            }
+
+            i++;
+        }
+        res += bt+ut+it+1;
+
+        p = i+1;
+
+    }
+}
+
+int main()
+{
+    ofstream fout(getenv("OUTPUT_PATH"));
+
+    string starting_count_temp;
+    getline(cin, starting_count_temp);
+
+    int starting_count = stoi(ltrim(rtrim(starting_count_temp)));
+
+    vector<int> starting(starting_count);
+
+    for (int i = 0; i < starting_count; i++) {
+        string starting_item_temp;
+        getline(cin, starting_item_temp);
+
+        int starting_item = stoi(ltrim(rtrim(starting_item_temp)));
+
+        starting[i] = starting_item;
+    }
+
+    string ending_count_temp;
+    getline(cin, ending_count_temp);
+
+    int ending_count = stoi(ltrim(rtrim(ending_count_temp)));
+
+    vector<int> ending(ending_count);
+
+    for (int i = 0; i < ending_count; i++) {
+        string ending_item_temp;
+        getline(cin, ending_item_temp);
+
+        int ending_item = stoi(ltrim(rtrim(ending_item_temp)));
+
+        ending[i] = ending_item;
+    }
+
+    string style_count_temp;
+    getline(cin, style_count_temp);
+
+    int style_count = stoi(ltrim(rtrim(style_count_temp)));
+
+    vector<char> style(style_count);
+
+    for (int i = 0; i < style_count; i++) {
+        string style_item_temp;
+        getline(cin, style_item_temp);
+
+        char style_item = style_item_temp[0];
+
+        style[i] = style_item;
+    }
+
+    int result = textFormatting(starting, ending, style);
+
+    fout << result << "\n";
+
+    fout.close();
+
+    return 0;
+}
+
+string ltrim(const string &str) {
+    string s(str);
+
+    s.erase(
+        s.begin(),
+        find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)))
+    );
+
+    return s;
+}
+
+string rtrim(const string &str) {
+    string s(str);
+
+    s.erase(
+        find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(),
+        s.end()
+    );
+
+    return s;
+}

@@ -1,0 +1,3 @@
+asdf3456jjaslkdfj$%^$^%565$^asd54fghju = input string
+ asdfjjaslkdfj$%^$^%$^asdfghju
+4075 =sum
