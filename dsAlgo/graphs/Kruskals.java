@@ -67,8 +67,8 @@ public class Main {
   }
 
   public static boolean union(int x, int y) {
-    int lx = find(x);
-    int ly = find(y);
+    int lx = find(x); //parent of X
+    int ly = find(y); //parent of Y
 
     if(lx != ly) {
       if(rank[lx] > rank[ly])

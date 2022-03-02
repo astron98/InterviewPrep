@@ -1,4 +1,5 @@
 /*
+Detection of cycle in Undirected graph.
 1. using BFS
 2. using DFS
 */
@@ -42,7 +43,7 @@ public class DetectCycle {
       boolean isCyclic = false;
       boolean[] visited = new boolean[vtces];
       for(int v=0;v<vtces; v++) {
-          if(!visited[v] && cyclicBfs(v, graph, visited)) {
+          if(!visited[v] && cyclicDfs(v, -1, graph, visited)) {
               isCyclic = true;
               break;
           }
@@ -51,6 +52,7 @@ public class DetectCycle {
       System.out.println(isCyclic);
    }
    
+   //1. with BFS
    public static boolean cyclicBfs(int src, ArrayList<Edge>[] graph, boolean[] visited) {
        Queue<Integer> q = new ArrayDeque<>();
        q.add(src);
@@ -70,5 +72,21 @@ public class DetectCycle {
        }
        
        return false;
-   }   
+   } 
+
+   //2. with DFS
+   	public static boolean cyclicDfs(int src, int parent, ArrayList<Edge>[] graph, boolean[] visited) {
+   		visited[src] = true;
+
+   		for(Edge e : graph[src]) {
+   			if(!visited[e.nbr]) {
+   				if(cyclicDfs(e.nbr, src, graph, visited))
+   					return true;
+   			}
+   			else if(e.nbr != parent)	
+   				return true;	//if the already visited vertex e != parent of src then its a cycle.
+   		}
+
+   		return false;
+	}
 }
