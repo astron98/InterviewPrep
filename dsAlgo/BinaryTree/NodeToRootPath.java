@@ -2,23 +2,23 @@ import java.io.*;
 import java.util.*;
 
 /*
-1. You are given a partially written BinaryTree class.
-2. You are given a value data and a value k.
-3. You are required to complete the body of printKNodesFar function. 
-The function is expected to print all nodes which are k distance away in any direction from node with value equal to data.
 
-Sample Input:
+You are required to complete the body of find and nodeToRoot function. The functions are expected to 
+    3.1. find -> return true or false depending on if the data is found in binary tree.
+    3.2. nodeToRoot -> returns the path from node (correspoding to data) to root in 
+    form of an arraylist (root being the last element)
+
+Sample Input
 19
 50 25 12 n n 37 30 n n n 75 62 n 70 n n 87 n n
-37
-2
+30
 
-output:
-12
-50
+Sample Output
+true
+[30, 37, 25, 50]
 */
 
-public class PrintNodesKDistanceAway {
+public class Main {
   public static class Node {
     int data;
     Node left;
@@ -95,54 +95,36 @@ public class PrintNodesKDistanceAway {
     display(node.left);
     display(node.right);
   }
-  
-  //step 1: find all nodes in that Path.
-  public static ArrayList<Node> findNode(Node root, int data) {
-    if(root == null) return null;
-    ArrayList<Node> curr =  new ArrayList<>();
 
-    if(root.data==data) return new ArrayList<>(Arrays.asList(root));
-    
-    ArrayList<Node> left = findNode(root.left, data);
-    ArrayList<Node> right = findNode(root.right, data);
-    if(left!=null && left.size()>0)
-        curr.addAll(left);
-        
-    if(right!=null && right.size()>0)
-        curr.addAll(right);
-
-    if(curr.size()>0)
-        curr.add(root); 
-    //only add curr node when you find the we're able to get the data in the sub-tree of that node.
-    //else just return empty curr indicating that the data couldn't be found in its subtree.
-    return curr;
-  }
-    
-    //step 2: print K Levels down.
-    public static void printKLevelsDown(Node root, int k, Node blocker) {
-        if(root==null || k<0 || root==blocker) return;
-        if(k==0) {
-            System.out.println(root.data);
-            return;
-        }
-        printKLevelsDown(root.left, k-1, blocker);
-        printKLevelsDown(root.right, k-1, blocker);
-    }
-    
-  public static void printKNodesFar(Node node, int data, int k) {
+  public static boolean find(Node node, int data){
     // write your code here
-    //1. find the node 
-    //2. print all the nodes at K level down from that node.
-    ArrayList<Node> path = findNode(node, data);
-    for(int i=0;i<path.size();i++) {
-        Node blocker = (i==0)? null : path.get(i-1);  //don't visit in the blocker's direction
-        printKLevelsDown(path.get(i), k-i, blocker);
+    if(node==null) return false;
+    if(node.data== data) return true;
+    return find(node.left,data) || find(node.right, data);
+  }
+
+  public static ArrayList<Integer> nodeToRootPath(Node node, int data){
+    // write your code here
+    ArrayList<Integer> curr = new ArrayList<>();
+    if(node==null) return null;
+    if(node.data == data) {
+        return new ArrayList<>(Arrays.asList(data));
     }
     
+    ArrayList<Integer> left = nodeToRootPath(node.left, data);
+    ArrayList<Integer> right = nodeToRootPath(node.right, data);
+    
+    curr = (left!=null && left.size()>0)? left : (right!=null && right.size()>0)?right: curr;
+    if(curr.size()==0)
+        return curr;
+    
+    curr.add(node.data);    
+        
+    return curr;
   }
 
   public static void main(String[] args) throws Exception {
-    BufferedReader br = new BufferedReader(new FileReader("../input"));
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     int n = Integer.parseInt(br.readLine());
     Integer[] arr = new Integer[n];
     String[] values = br.readLine().split(" ");
@@ -155,10 +137,13 @@ public class PrintNodesKDistanceAway {
     }
 
     int data = Integer.parseInt(br.readLine());
-    int k = Integer.parseInt(br.readLine());
 
     Node root = construct(arr);
-    printKNodesFar(root, data, k);
+    boolean found = find(root, data);
+    System.out.println(found);
+
+    ArrayList<Integer> path = nodeToRootPath(root, data);
+    System.out.println(path);
   }
 
 }
