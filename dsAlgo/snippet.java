@@ -31,3 +31,8 @@ public static class snippet {
     }
   }
 }
+
+//2. arraylist to array using streams api
+int[] arr = list.stream().mapToInt(i -> i).toArray();
+
+//3. 
