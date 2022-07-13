@@ -14,4 +14,4 @@ class Solution {
     }
 }
 
-//leetcode: 50
+//leetcode: 50. Pow(x, n)
